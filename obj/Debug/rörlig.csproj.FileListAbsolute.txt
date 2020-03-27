@@ -1,0 +1,10 @@
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\bin\Debug\rörlig.exe.config
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\bin\Debug\rörlig.exe
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\bin\Debug\rörlig.pdb
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.csprojAssemblyReference.cache
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.Form1.resources
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.Properties.Resources.resources
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.csproj.GenerateResource.cache
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.csproj.CoreCompileInputs.cache
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.exe
+C:\Users\0127sjma\source\repos\windows_forms\rörlig\obj\Debug\rörlig.pdb
