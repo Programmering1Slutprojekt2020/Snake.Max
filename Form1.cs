@@ -31,11 +31,25 @@ namespace rörlig {
             orm.Add((260, 200));
         }
 
-        static void matKoordinater () {
+        static void matKoordinater() {
 
             mat.X = r.Next(0, 30);
             mat.Y = r.Next(0, 30);
 
+            while (true) {
+
+                for (int i = 0; i < orm.Count; i++) {
+
+                    if (mat.X == orm.ElementAt(i).Item1 && mat.Y == orm.ElementAt(i).Item2) {
+
+                        mat.X = r.Next(0, 30);
+                        mat.Y = r.Next(0, 30);
+
+                    }
+                    else goto Foo;
+                }
+            }
+        Foo:;
         }
 
         private void Panel1_Paint(object sender, PaintEventArgs e) {
