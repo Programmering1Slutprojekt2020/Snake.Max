@@ -46,10 +46,10 @@ namespace rörlig {
                         mat.Y = r.Next(0, 30);
 
                     }
-                    else goto Foo;
+                    else goto Brytning;
                 }
             }
-        Foo:;
+            Brytning:;
         }
 
         private void Panel1_Paint(object sender, PaintEventArgs e) {
