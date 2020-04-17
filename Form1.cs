@@ -18,6 +18,13 @@ namespace rörlig {
         static Random r = new Random();
         static Point mat = new Point(2,2);
         static bool ätit = false;
+
+        //variabler för special_mat
+        static Point special_mat = new Point();
+        static bool power = false;
+        static int Tick_Count = 0;
+        static int power_delay = 20;
+        static bool power_enabled = false;
         
         public Form1() {
             InitializeComponent();
@@ -31,10 +38,21 @@ namespace rörlig {
             orm.Add((260, 200));
         }
 
+        static void power_reset() {
+
+            power = false;
+            Tick_Count = 0;
+            power_delay = r.Next(20, 200);
+
+
+        }
+
         static void matKoordinater() {
 
             mat.X = r.Next(0, 30);
             mat.Y = r.Next(0, 30);
+
+            //maten inte spawnar under ormen
 
             while (true) {
 
@@ -58,9 +76,12 @@ namespace rörlig {
             Font style = new Font("Calibri", 20);
             SolidBrush bl = new SolidBrush(Color.Black);
             SolidBrush rd = new SolidBrush(Color.Red);
+            SolidBrush gr = new SolidBrush(Color.LightGreen);
 
             g.FillRectangle(rd, mat.X * 20, mat.Y * 20, 20, 20); 
-            
+
+            if (power) g.FillRectangle(gr, special_mat.X * 20, special_mat.Y * 20, 20, 20);
+
             foreach ((int x, int y) in orm) { g.FillRectangle(bl, x, y, 20, 20); }
             
             if (pause) { g.DrawString("Paused", style, bl, panel1.Width/2, panel1.Height/2); }
@@ -69,24 +90,26 @@ namespace rörlig {
 
         }
 
-        
+
 
         private void Timer1_Tick(object sender, EventArgs e) {
 
+            //orm rörelse
+
             if (riktning == 1) {
-                orm.Insert(0,(orm.ElementAt(0).Item1 - 20, orm.ElementAt(0).Item2));             
+                orm.Insert(0, (orm.ElementAt(0).Item1 - 20, orm.ElementAt(0).Item2));
             }
 
             if (riktning == 2) {
-                orm.Insert(0,(orm.ElementAt(0).Item1 + 20, orm.ElementAt(0).Item2)); 
+                orm.Insert(0, (orm.ElementAt(0).Item1 + 20, orm.ElementAt(0).Item2));
             }
 
             if (riktning == 3) {
-                orm.Insert(0,(orm.ElementAt(0).Item1, orm.ElementAt(0).Item2 + 20));              
+                orm.Insert(0, (orm.ElementAt(0).Item1, orm.ElementAt(0).Item2 + 20));
             }
 
             if (riktning == 4) {
-                orm.Insert(0,(orm.ElementAt(0).Item1, orm.ElementAt(0).Item2 - 20));  
+                orm.Insert(0, (orm.ElementAt(0).Item1, orm.ElementAt(0).Item2 - 20));
             }
 
             if (orm.ElementAt(0).Item1 > panel1.Width) {
@@ -108,15 +131,29 @@ namespace rörlig {
                 orm.RemoveAt(orm.Count - 1);
             }
             else ätit = false;
-            
 
-            if (orm.ElementAt(0).Item1/20 == mat.X && orm.ElementAt(0).Item2 / 20 == mat.Y) {
+            //orm äter
+
+            if (orm.ElementAt(0).Item1 / 20 == mat.X && orm.ElementAt(0).Item2 / 20 == mat.Y) {
 
                 ätit = true;
 
                 matKoordinater();
-                
+
             }
+
+            if (orm.ElementAt(0).Item1 / 20 == special_mat.X && orm.ElementAt(0).Item2 / 20 == special_mat.Y && power) {
+
+                timer1.Interval = 100;
+
+                power_enabled = true;
+
+                power_reset();
+
+
+            }
+
+            //orm dör
 
             for (int i = 1; i < orm.Count; i++) {
 
@@ -130,8 +167,52 @@ namespace rörlig {
 
                 }
             }
-            
 
+            //special mat
+
+            Tick_Count++;
+
+            if (Tick_Count >= power_delay) {
+
+                //första tick + check för spawn
+
+                if (!power) {
+
+                    special_mat.X = r.Next(0, 30);
+                    special_mat.Y = r.Next(0, 30);
+
+                    while (true) {
+
+                        for (int i = 0; i < orm.Count; i++) {
+
+                            if ((special_mat.X == orm.ElementAt(i).Item1 && special_mat.Y == orm.ElementAt(i).Item2) || (special_mat.X == mat.X && special_mat.Y == mat.Y)) {
+
+                                special_mat.X = r.Next(0, 30);
+                                special_mat.Y = r.Next(0, 30);
+
+                            }
+                            else goto Bryt;
+                        }
+                    }
+
+                Bryt:;
+
+                }
+
+                power = true;
+
+            }
+
+            if (Tick_Count >= power_delay + 20) power_reset();
+
+            if (Tick_Count >= 30 && power_enabled) {
+
+                timer1.Interval = 200;
+
+                power_enabled = false;
+
+            }
+            
             panel1.Invalidate();
 
         }
